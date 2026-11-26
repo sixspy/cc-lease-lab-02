@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <title>租约台</title>
+  <link rel="stylesheet" href="/styles.css"/>
+  <script src="/common.js"></script>
+  <script src="/sidebar.js" defer></script>
+</head>
+<body data-page="leases" class="壳">
+  <aside class="侧栏">
+    <div class="牌">资源租约台</div>
+    <nav id="侧栏导航"></nav>
+    <div class="底"><button class="按钮 次" type="button" id="退出钮">退出</button></div>
+  </aside>
+  <main class="主区">
+    <header class="页头"><h1>租约台</h1><p>从资源池申领租约，激活待生效条目，跟踪到期时刻。</p></header>
+    <section class="卷">
+      <h2>申领租约</h2>
+      <div class="表单行">
+        <div class="项"><label>池键</label><select id="申领池"></select></div>
+        <div class="项"><label>租户</label><input id="申领租户" value="team-demo"/></div>
+        <div class="项"><label>租期分钟</label><input id="申领分钟" type="number" value="60"/></div>
+        <div class="项"><label>立即生效</label><select id="申领立即"><option value="1">是</option><option value="0">否</option></select></div>
+        <button class="按钮 琥珀" type="button" id="申领钮">申领</button>
+      </div>
+      <p class="消息" id="申领消息"></p>
+    </section>
+    <section class="卷">
+      <div class="工具条">
+        <label>筛选状态</label>
+        <select id="状态筛">
+          <option value="">全部</option>
+          <option>待生效</option>
+          <option>生效中</option>
+          <option>已续约</option>
+          <option>已回收</option>
+        </select>
+        <button class="按钮" type="button" id="刷新钮">刷新</button>
+      </div>
+      <table>
+        <thead><tr><th>租约号</th><th>租户</th><th>池</th><th>状态</th><th>到期</th><th>操作</th></tr></thead>
+        <tbody id="租约表"></tbody>
+      </table>
+    </section>
+  </main>
+  <script src="/js/pages/leases.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>资源租约台 · 总览</title>
+  <link rel="stylesheet" href="/styles.css"/>
+  <script src="/common.js"></script>
+  <script src="/sidebar.js" defer></script>
+</head>
+<body data-page="index" class="壳">
+  <aside class="侧栏">
+    <div class="牌">资源租约台</div>
+    <nav id="侧栏导航"></nav>
+    <div class="底"><button class="按钮 次" type="button" id="退出钮">退出登录</button></div>
+  </aside>
+  <main class="主区">
+    <header class="页头">
+      <h1>租约总览</h1>
+      <p id="主链说明">加载中…</p>
+    </header>
+    <section class="卷"><div class="指标" id="指标"></div></section>
+    <section class="卷">
+      <h2>近期租约</h2>
+      <table>
+        <thead><tr><th>租约号</th><th>池键</th><th>租户</th><th>状态</th><th>到期</th></tr></thead>
+        <tbody id="租约表"></tbody>
+      </table>
+    </section>
+    <section class="卷">
+      <h2>快捷互证</h2>
+      <button class="按钮 琥珀" type="button" id="互证钮">跑租账互证</button>
+      <pre class="输出" id="互证出"></pre>
+    </section>
+  </main>
+  <script src="/js/pages/home.js"></script>
+</body>
+</html>

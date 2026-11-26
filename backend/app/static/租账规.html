@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <title>租账规</title>
+  <link rel="stylesheet" href="/styles.css"/>
+  <script src="/common.js"></script>
+  <script src="/sidebar.js" defer></script>
+</head>
+<body data-page="rules" class="壳">
+  <aside class="侧栏">
+    <div class="牌">资源租约台</div>
+    <nav id="侧栏导航"></nav>
+    <div class="底"><button class="按钮 次" type="button" id="退出钮">退出</button></div>
+  </aside>
+  <main class="主区">
+    <header class="页头"><h1>租账规</h1><p>默认租期、心跳宽限与回收策略，影响申领与扫描逻辑。</p></header>
+    <section class="卷" id="规表单"></section>
+    <button class="按钮 琥珀" type="button" id="保存规">保存规约</button>
+    <p class="消息" id="规消息"></p>
+  </main>
+  <script src="/js/pages/rules.js"></script>
+</body>
+</html>

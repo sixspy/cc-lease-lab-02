@@ -1,0 +1,28 @@
+name: lease
+services:
+  lease:
+    build: ./backend
+    container_name: cc-lease-lab-lease-02
+    ports: ["8602:8600"]
+    volumes:
+      - lease_data:/data
+      - ./fixtures:/fixtures:ro
+    environment:
+      数据目录: /data
+      夹具目录: /fixtures
+      端口: "8600"
+      会话密钥: lease-lab-session-dev-key-8600
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8600/login', timeout=5)",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 25s
+volumes:
+  lease_data:

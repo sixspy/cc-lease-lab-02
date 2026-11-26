@@ -1,0 +1,202 @@
+:root {
+  --石板: #1e293b;
+  --石板浅: #334155;
+  --石板深: #0f172a;
+  --雾白: #f1f5f9;
+  --墨: #0f172a;
+  --线: #475569;
+  --琥珀: #f59e0b;
+  --琥珀浅: #fbbf24;
+  --好: #22c55e;
+  --警: #eab308;
+  --险: #ef4444;
+  --卡: #ffffff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--雾白);
+  color: var(--墨);
+  min-height: 100vh;
+}
+.壳 {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+.侧栏 {
+  background: linear-gradient(180deg, var(--石板深), var(--石板));
+  color: #e2e8f0;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 3px solid var(--琥珀);
+}
+.侧栏 .牌 {
+  padding: 0 18px 16px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  color: var(--琥珀浅);
+}
+.侧栏 nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.侧栏 nav a {
+  color: #cbd5e1;
+  text-decoration: none;
+  padding: 10px 18px;
+  font-size: 14px;
+  border-left: 3px solid transparent;
+}
+.侧栏 nav a.亮,
+.侧栏 nav a:hover {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fff;
+  border-left-color: var(--琥珀);
+}
+.侧栏 .底 {
+  padding: 12px 18px;
+  font-size: 12px;
+  opacity: 0.75;
+}
+.主区 {
+  padding: 24px 28px 48px;
+  max-width: 1180px;
+}
+.页头 h1 { margin: 0 0 6px; font-size: 1.65rem; color: var(--石板); }
+.页头 p { margin: 0 0 18px; color: var(--线); line-height: 1.5; }
+.卷 {
+  background: var(--卡);
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+.卷 h2 { margin: 0 0 12px; font-size: 1.1rem; color: var(--石板浅); }
+.指标 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+.卡 {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.卡 small { display: block; font-size: 12px; color: var(--线); }
+.卡 b { font-size: 1.35rem; color: var(--石板); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { border-bottom: 1px solid #e2e8f0; padding: 8px 6px; text-align: left; }
+th { color: var(--石板浅); font-weight: 600; }
+.徽章 {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: #e2e8f0;
+  color: var(--石板);
+}
+.徽章.待生效 { background: #fef3c7; color: #92400e; }
+.徽章.生效中 { background: #dbeafe; color: #1e40af; }
+.徽章.已续约 { background: #d1fae5; color: #047857; }
+.徽章.已回收 { background: #fee2e2; color: #b91c1c; }
+.徽章.待回收 { background: #ffedd5; color: #c2410c; }
+.徽章.已作废 { background: #f1f5f9; color: #64748b; }
+.按钮 {
+  background: var(--石板);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.按钮.琥珀 { background: var(--琥珀); color: var(--石板深); font-weight: 600; }
+.按钮.次 { background: var(--石板浅); }
+.按钮:disabled { opacity: 0.45; cursor: not-allowed; }
+label { display: block; margin: 8px 0 4px; font-size: 13px; color: var(--线); }
+input, select, textarea {
+  width: 100%;
+  max-width: 420px;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+}
+.表单行 { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-bottom: 12px; }
+.表单行 .项 { flex: 1; min-width: 160px; }
+.说明 { font-size: 13px; color: var(--线); line-height: 1.55; }
+.消息 { color: var(--险); font-size: 13px; min-height: 1.2em; }
+.工具条 { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+pre.输出 {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  overflow: auto;
+  max-height: 240px;
+}
+.登录壳 {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  background: var(--石板深);
+}
+.登录左 {
+  padding: 48px 40px;
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.登录左 h1 { color: var(--琥珀浅); margin: 0 0 12px; }
+.登录左 .链 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+.登录左 .链 span {
+  padding: 6px 12px;
+  border: 1px solid var(--琥珀);
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--琥珀浅);
+}
+.登录右 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--雾白);
+  padding: 32px;
+}
+.登录卡 {
+  width: min(400px, 100%);
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+}
+.登录卡 h2 { margin: 0 0 8px; color: var(--石板); }
+.进度条 {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+.进度条 i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--琥珀), var(--琥珀浅));
+}
+@media (max-width: 860px) {
+  .壳 { grid-template-columns: 1fr; }
+  .侧栏 { flex-direction: row; flex-wrap: wrap; padding: 12px; }
+  .侧栏 nav { flex-direction: row; flex-wrap: wrap; }
+  .登录壳 { grid-template-columns: 1fr; }
+}

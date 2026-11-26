@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>资源租约台 · 登录</title>
+  <link rel="stylesheet" href="/styles.css"/>
+</head>
+<body>
+  <div class="登录壳">
+    <section class="登录左">
+      <h1>资源租约台</h1>
+      <p>应用开发全栈实验台：资源池配额、租约申领、心跳续约、逾期回收与租账互证。左侧栏导航，冷石板配琥珀强调色。</p>
+      <div class="链">
+        <span>资源池</span><span>申领租约</span><span>心跳续约</span><span>回收匣</span><span>租账互证</span>
+      </div>
+    </section>
+    <section class="登录右">
+      <div class="登录卡">
+        <h2>登录</h2>
+        <p class="说明">默认账号 admin，密码 123456</p>
+        <label for="账号">账号</label>
+        <input id="账号" value="admin" autocomplete="username"/>
+        <label for="密码">密码</label>
+        <input id="密码" type="password" value="123456" autocomplete="current-password"/>
+        <p class="消息" id="消息"></p>
+        <button class="按钮 琥珀" type="button" id="登录钮">进入租约台</button>
+      </div>
+    </section>
+  </div>
+  <script>
+  document.getElementById('登录钮').onclick = async () => {
+    const 消息 = document.getElementById('消息');
+    try {
+      const r = await fetch('/api/登录', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          账号: document.getElementById('账号').value,
+          密码: document.getElementById('密码').value,
+        }),
+      });
+      const data = await r.json();
+      if (data.ok) location.href = '/';
+      else 消息.textContent = data.错误 || '登录失败';
+    } catch (e) { 消息.textContent = String(e); }
+  };
+  </script>
+</body>
+</html>

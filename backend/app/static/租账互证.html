@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <title>租账互证</title>
+  <link rel="stylesheet" href="/styles.css"/>
+  <script src="/common.js"></script>
+  <script src="/sidebar.js" defer></script>
+</head>
+<body data-page="reconcile" class="壳">
+  <aside class="侧栏">
+    <div class="牌">资源租约台</div>
+    <nav id="侧栏导航"></nav>
+    <div class="底"><button class="按钮 次" type="button" id="退出钮">退出</button></div>
+  </aside>
+  <main class="主区">
+    <header class="页头"><h1>租账互证</h1><p>核对资源池已占合计与未回收租约数，生成互证报告。</p></header>
+    <section class="卷">
+      <button class="按钮 琥珀" type="button" id="跑互证">执行互证</button>
+      <pre class="输出" id="互证详情"></pre>
+    </section>
+    <section class="卷">
+      <h2>历史报告</h2>
+      <table>
+        <thead><tr><th>报告号</th><th>时刻</th><th>结论</th><th>对齐</th><th>差异摘要</th></tr></thead>
+        <tbody id="报告表"></tbody>
+      </table>
+    </section>
+    <section class="卷">
+      <h2>操作留痕</h2>
+      <table>
+        <thead><tr><th>时刻</th><th>操作</th><th>租约号</th><th>详情</th></tr></thead>
+        <tbody id="留痕表"></tbody>
+      </table>
+    </section>
+  </main>
+  <script src="/js/pages/reconcile.js"></script>
+</body>
+</html>

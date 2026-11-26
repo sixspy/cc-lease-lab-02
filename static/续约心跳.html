@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <title>续约心跳</title>
+  <link rel="stylesheet" href="/styles.css"/>
+  <script src="/common.js"></script>
+  <script src="/sidebar.js" defer></script>
+</head>
+<body data-page="heartbeat" class="壳">
+  <aside class="侧栏">
+    <div class="牌">资源租约台</div>
+    <nav id="侧栏导航"></nav>
+    <div class="底"><button class="按钮 次" type="button" id="退出钮">退出</button></div>
+  </aside>
+  <main class="主区">
+    <header class="页头"><h1>续约心跳</h1><p>对生效租约发送心跳，成功则延长到期并计入续约次数。</p></header>
+    <section class="卷">
+      <div class="表单行">
+        <div class="项"><label>租约号</label><select id="心跳租约"></select></div>
+        <div class="项"><label>延长分钟</label><input id="延长分" type="number" value="30"/></div>
+        <button class="按钮 琥珀" type="button" id="心跳钮">发送心跳</button>
+        <button class="按钮 次" type="button" id="失败钮">模拟失败</button>
+      </div>
+      <p class="消息" id="心跳消息"></p>
+    </section>
+    <section class="卷">
+      <h2>心跳流水</h2>
+      <table>
+        <thead><tr><th>心跳号</th><th>租约号</th><th>时刻</th><th>结果</th><th>延迟ms</th></tr></thead>
+        <tbody id="心跳表"></tbody>
+      </table>
+    </section>
+  </main>
+  <script src="/js/pages/heartbeat.js"></script>
+</body>
+</html>

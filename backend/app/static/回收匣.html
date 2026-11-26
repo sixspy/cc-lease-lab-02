@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <title>回收匣</title>
+  <link rel="stylesheet" href="/styles.css"/>
+  <script src="/common.js"></script>
+  <script src="/sidebar.js" defer></script>
+</head>
+<body data-page="reclaim" class="壳">
+  <aside class="侧栏">
+    <div class="牌">资源租约台</div>
+    <nav id="侧栏导航"></nav>
+    <div class="底"><button class="按钮 次" type="button" id="退出钮">退出</button></div>
+  </aside>
+  <main class="主区">
+    <header class="页头"><h1>回收匣</h1><p>逾期租约入匣待处置，确认后释放池占用。</p></header>
+    <section class="卷">
+      <button class="按钮 琥珀" type="button" id="扫描钮">扫描逾期并入匣</button>
+      <button class="按钮" type="button" id="刷新钮">刷新列表</button>
+      <p class="说明" id="扫描结果"></p>
+    </section>
+    <section class="卷">
+      <table>
+        <thead><tr><th>回收号</th><th>租约号</th><th>原因</th><th>状态</th><th>入匣时</th><th>操作</th></tr></thead>
+        <tbody id="回收表"></tbody>
+      </table>
+    </section>
+  </main>
+  <script src="/js/pages/reclaim.js"></script>
+</body>
+</html>

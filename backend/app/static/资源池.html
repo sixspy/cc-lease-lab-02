@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <title>资源池</title>
+  <link rel="stylesheet" href="/styles.css"/>
+  <script src="/common.js"></script>
+  <script src="/sidebar.js" defer></script>
+</head>
+<body data-page="pools" class="壳">
+  <aside class="侧栏">
+    <div class="牌">资源租约台</div>
+    <nav id="侧栏导航"></nav>
+    <div class="底"><button class="按钮 次" type="button" id="退出钮">退出</button></div>
+  </aside>
+  <main class="主区">
+    <header class="页头"><h1>资源池</h1><p>查看容量占用，登记新池，启用或调整容量。</p></header>
+    <section class="卷">
+      <h2>登记新池</h2>
+      <div class="表单行">
+        <div class="项"><label>池键</label><input id="新池键" placeholder="pool-demo"/></div>
+        <div class="项"><label>名称</label><input id="新名称" placeholder="演示池"/></div>
+        <div class="项"><label>容量</label><input id="新容量" type="number" value="50"/></div>
+        <button class="按钮 琥珀" type="button" id="登记钮">登记</button>
+      </div>
+      <p class="消息" id="登记消息"></p>
+    </section>
+    <section class="卷">
+      <table>
+        <thead><tr><th>池键</th><th>名称</th><th>占用</th><th>启用</th><th>操作</th></tr></thead>
+        <tbody id="池表"></tbody>
+      </table>
+    </section>
+  </main>
+  <script src="/js/pages/pools.js"></script>
+</body>
+</html>
