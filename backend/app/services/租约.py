@@ -29,40 +29,63 @@ def 申领(body: dict) -> dict:
     租约号 = 校验.租约号(租约号)
     分钟 = int(body.get("租期分钟") or _默认租期分钟())
     分钟 = 校验.正整数("租期分钟", 分钟, 下限=5, 上限=60 * 24 * 30)
+    依据指纹 = body.get("容量指纹", body.get("依据指纹"))
+    允许超额 = 说明.租账规().get("允许超额申领") == "1"
 
-    conn = 连接()
-    try:
-        if conn.execute("SELECT 1 FROM 租约 WHERE 租约号=?", (租约号,)).fetchone():
-            raise ValueError("租约号已存在")
-        资源.预占一格(池键)
-        现在 = datetime.now(timezone.utc)
-        到期 = 现在 + timedelta(minutes=分钟)
-        iso = lambda dt: dt.strftime("%Y-%m-%dT%H:%M:%SZ")
-        生效 = bool(body.get("立即生效", True))
-        状态 = "生效中" if 生效 else "待生效"
-        conn.execute(
-            """INSERT INTO 租约(租约号,池键,租户,状态,申领时,生效时,到期时刻,续约次数,更新时)
-               VALUES (?,?,?,?,?,?,?,?,?)""",
-            (
-                租约号,
+    # 与 资源.改容量 抢同一把“池容量锁”，杜绝并发读集合分叉导致的双成功。
+    with 资源.池锁(池键):
+        conn = 连接()
+        conn.isolation_level = None
+        try:
+            conn.execute("BEGIN IMMEDIATE")
+            if conn.execute(
+                "SELECT 1 FROM 租约 WHERE 租约号=?", (租约号,)
+            ).fetchone():
+                raise ValueError("租约号已存在")
+
+            # 容量闸：按现行新容量/最新指纹裁决，并在同事务写“放行”裁决。
+            资源.闸口预占(
+                conn,
                 池键,
-                租户,
-                状态,
-                iso(现在),
-                iso(现在) if 生效 else "",
-                iso(到期),
-                0,
-                iso(现在),
-            ),
-        )
-        _留痕(conn, "申领租约", 租约号, 池键, 租户)
-        conn.commit()
-        return 说明.租约一条(租约号)
-    except Exception:
-        conn.rollback()
-        raise
-    finally:
-        conn.close()
+                租约号=租约号,
+                租户=租户,
+                依据指纹=依据指纹,
+                允许超额=允许超额,
+            )
+
+            现在 = datetime.now(timezone.utc)
+            到期 = 现在 + timedelta(minutes=分钟)
+            iso = lambda dt: dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+            生效 = bool(body.get("立即生效", True))
+            状态 = "生效中" if 生效 else "待生效"
+            conn.execute(
+                """INSERT INTO 租约(租约号,池键,租户,状态,申领时,生效时,到期时刻,续约次数,更新时)
+                   VALUES (?,?,?,?,?,?,?,?,?)""",
+                (
+                    租约号,
+                    池键,
+                    租户,
+                    状态,
+                    iso(现在),
+                    iso(现在) if 生效 else "",
+                    iso(到期),
+                    0,
+                    iso(现在),
+                ),
+            )
+            _留痕(conn, "申领租约", 租约号, 池键, 租户)
+            conn.commit()
+        except 资源.容量闸拒绝 as e:
+            conn.rollback()
+            # 主事务回滚（未占格、无租约），但“余量不足已拒/收紧拒回刷”要留旁路册。
+            资源.记录裁决(e.裁决)
+            raise
+        except Exception:
+            conn.rollback()
+            raise
+        finally:
+            conn.close()
+    return 说明.租约一条(租约号)
 
 
 def 激活(租约号: str) -> dict:

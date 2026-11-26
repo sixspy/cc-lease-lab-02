@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS 资源池 (
   已占 INTEGER NOT NULL DEFAULT 0,
   启用 INTEGER NOT NULL DEFAULT 1,
   说明 TEXT NOT NULL DEFAULT '',
+  容量指纹 INTEGER NOT NULL DEFAULT 0,
   更新时 TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS 租约 (
@@ -75,7 +76,38 @@ CREATE TABLE IF NOT EXISTS 操作留痕 (
   池键 TEXT NOT NULL DEFAULT '',
   详情 TEXT NOT NULL DEFAULT ''
 );
+CREATE TABLE IF NOT EXISTS 容量切流账 (
+  指纹 INTEGER PRIMARY KEY AUTOINCREMENT,
+  时刻 TEXT NOT NULL,
+  池键 TEXT NOT NULL,
+  旧容量 INTEGER NOT NULL,
+  新容量 INTEGER NOT NULL,
+  收紧前已占 INTEGER NOT NULL,
+  可申领余量 INTEGER NOT NULL,
+  是否收紧 INTEGER NOT NULL DEFAULT 0,
+  操作人 TEXT NOT NULL DEFAULT '',
+  说明 TEXT NOT NULL DEFAULT ''
+);
+CREATE TABLE IF NOT EXISTS 容量裁决账 (
+  裁决号 INTEGER PRIMARY KEY AUTOINCREMENT,
+  时刻 TEXT NOT NULL,
+  池键 TEXT NOT NULL,
+  指纹 INTEGER NOT NULL DEFAULT 0,
+  读到容量 INTEGER NOT NULL,
+  读到已占 INTEGER NOT NULL,
+  可申领余量 INTEGER NOT NULL,
+  租约号 TEXT NOT NULL DEFAULT '',
+  租户 TEXT NOT NULL DEFAULT '',
+  结论 TEXT NOT NULL,
+  原因码 TEXT NOT NULL DEFAULT 'OK',
+  详情 TEXT NOT NULL DEFAULT ''
+);
 """
+
+# 旧库幂等补列：CREATE TABLE IF NOT EXISTS 不会给已存在的资源池表加列。
+补列 = [
+    "ALTER TABLE 资源池 ADD COLUMN 容量指纹 INTEGER NOT NULL DEFAULT 0",
+]
 
 
 def 此刻() -> str:
@@ -93,6 +125,11 @@ def 初始化库() -> None:
     conn = 连接()
     try:
         conn.executescript(建表)
+        已有列 = {r["name"] for r in conn.execute("PRAGMA table_info(资源池)").fetchall()}
+        for stmt in 补列:
+            列名 = stmt.split("ADD COLUMN", 1)[1].strip().split()[0]
+            if 列名 not in 已有列:
+                conn.execute(stmt)
         n = conn.execute("SELECT COUNT(*) FROM 用户").fetchone()[0]
         if n == 0:
             conn.execute(

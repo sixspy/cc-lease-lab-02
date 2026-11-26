@@ -6,6 +6,12 @@
   <link rel="stylesheet" href="/styles.css"/>
   <script src="/common.js"></script>
   <script src="/sidebar.js" defer></script>
+  <style>
+    .详情卡 { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 10px 0 14px; }
+    .grid两栏 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid两栏 table { font-size: 12.5px; }
+    @media (max-width: 980px) { .grid两栏 { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body data-page="reconcile" class="壳">
   <aside class="侧栏">
@@ -14,10 +20,30 @@
     <div class="底"><button class="按钮 次" type="button" id="退出钮">退出</button></div>
   </aside>
   <main class="主区">
-    <header class="页头"><h1>租账互证</h1><p>核对资源池已占合计与未回收租约数，生成互证报告。</p></header>
+    <header class="页头"><h1>租账互证</h1><p>核对资源池已占与未回收租约，并按现行容量区分“新容量内合法占用”与“旧容量影子占用”，生成互证报告。</p></header>
     <section class="卷">
       <button class="按钮 琥珀" type="button" id="跑互证">执行互证</button>
       <pre class="输出" id="互证详情"></pre>
+      <div class="详情卡" id="容量口径卡"></div>
+      <h2>容量超容 / 旧容量影子占用</h2>
+      <table>
+        <thead><tr><th>池键</th><th>现行容量</th><th>已占</th><th>新容量内合法</th><th>旧容量影子</th></tr></thead>
+        <tbody id="超容表"></tbody>
+      </table>
+    </section>
+    <section class="卷">
+      <h2>容量切流账（指纹）</h2>
+      <table>
+        <thead><tr><th>指纹</th><th>池键</th><th>容量变化</th><th>收紧前已占</th><th>重算余量</th><th>动作</th><th>说明</th></tr></thead>
+        <tbody id="切流表"></tbody>
+      </table>
+    </section>
+    <section class="卷">
+      <h2>容量裁决账（放行 / 拒绝两轨）</h2>
+      <table>
+        <thead><tr><th>时刻</th><th>池键</th><th>结论</th><th>原因码</th><th>租约号</th><th>读集合</th></tr></thead>
+        <tbody id="裁决表"></tbody>
+      </table>
     </section>
     <section class="卷">
       <h2>历史报告</h2>

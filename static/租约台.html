@@ -6,6 +6,11 @@
   <link rel="stylesheet" href="/styles.css"/>
   <script src="/common.js"></script>
   <script src="/sidebar.js" defer></script>
+  <style>
+    .消息.好消息 { color: #047857; }
+    .消息.坏消息 { color: var(--险, #b91c1c); font-weight: 600; }
+    #容量提示 { font-size: 13px; color: var(--石板, #1e293b); background: #f8fafc; border: 1px solid var(--线, #e2e8f0); border-radius: 8px; padding: 8px 10px; margin: 6px 0 0; }
+  </style>
 </head>
 <body data-page="leases" class="壳">
   <aside class="侧栏">
@@ -14,7 +19,7 @@
     <div class="底"><button class="按钮 次" type="button" id="退出钮">退出</button></div>
   </aside>
   <main class="主区">
-    <header class="页头"><h1>租约台</h1><p>从资源池申领租约，激活待生效条目，跟踪到期时刻。</p></header>
+    <header class="页头"><h1>租约台</h1><p>从资源池申领租约，激活待生效条目；容量收紧后，新申领当场按现行容量裁决并在旁写出成败。</p></header>
     <section class="卷">
       <h2>申领租约</h2>
       <div class="表单行">
@@ -24,7 +29,15 @@
         <div class="项"><label>立即生效</label><select id="申领立即"><option value="1">是</option><option value="0">否</option></select></div>
         <button class="按钮 琥珀" type="button" id="申领钮">申领</button>
       </div>
+      <p id="容量提示"></p>
       <p class="消息" id="申领消息"></p>
+    </section>
+    <section class="卷">
+      <h2>容量裁决轨（放行 / 余量不足已拒 / 收紧拒回刷）</h2>
+      <table>
+        <thead><tr><th>时刻</th><th>结论</th><th>原因码</th><th>租约号</th><th>池</th><th>读集合</th></tr></thead>
+        <tbody id="裁决表"></tbody>
+      </table>
     </section>
     <section class="卷">
       <div class="工具条">

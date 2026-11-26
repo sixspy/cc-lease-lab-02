@@ -14,9 +14,14 @@ const 租约台 = {
       credentials: 'same-origin',
       body: JSON.stringify(body || {}),
     });
-    const data = await r.json();
+    const data = await r.json().catch(() => ({}));
     if (r.status === 401) location.href = '/login';
-    if (!r.ok) throw new Error(data.错误 || '请求失败');
+    if (!r.ok) {
+      const err = new Error(data.错误 || '请求失败');
+      err.data = data; // 附带结构化体（如 容量裁决），供页面分轨写出成败
+      err.status = r.status;
+      throw err;
+    }
     return data;
   },
   安全文本(s) {

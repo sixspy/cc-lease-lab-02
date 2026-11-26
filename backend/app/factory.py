@@ -128,6 +128,28 @@ def create_app() -> FastAPI:
         except (KeyError, ValueError) as e:
             return JSONResponse({"错误": str(e)}, status_code=400)
 
+    @app.get("/api/容量实况")
+    def api_容量实况(池键: str):
+        try:
+            return 资源.容量实况(池键)
+        except ValueError as e:
+            return JSONResponse({"错误": str(e)}, status_code=404)
+
+    @app.get("/api/容量切流")
+    def api_容量切流(池键: str | None = None):
+        rows = 资源.切流列表(池键)
+        return {"账": rows, "条数": len(rows)}
+
+    @app.get("/api/容量裁决")
+    def api_容量裁决(池键: str | None = None):
+        rows = 资源.裁决列表(池键)
+        return {
+            "账": rows,
+            "条数": len(rows),
+            "放行": sum(1 for r in rows if r["结论"] == "放行"),
+            "拒绝": sum(1 for r in rows if r["结论"] == "拒绝"),
+        }
+
     @app.get("/api/租约")
     def api_租约列表(状态: str | None = None):
         return 说明.租约列表(状态)
@@ -145,7 +167,10 @@ def create_app() -> FastAPI:
         try:
             return 租约.申领(body)
         except ValueError as e:
-            return JSONResponse({"错误": str(e)}, status_code=400)
+            裁决 = getattr(e, "裁决", None)
+            return JSONResponse(
+                {"错误": str(e), "容量裁决": 裁决}, status_code=400
+            )
 
     @app.post("/api/租约/激活")
     async def api_租约激活(request: Request):

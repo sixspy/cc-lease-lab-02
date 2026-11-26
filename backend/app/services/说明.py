@@ -62,7 +62,16 @@ def 仓情() -> dict:
 def 资源池列表() -> list:
     conn = 连接()
     try:
-        return [dict(r) for r in conn.execute("SELECT * FROM 资源池 ORDER BY 池键").fetchall()]
+        rows = [dict(r) for r in conn.execute("SELECT * FROM 资源池 ORDER BY 池键").fetchall()]
+        for d in rows:
+            cap = int(d.get("容量") or 0)
+            used = int(d.get("已占") or 0)
+            d["可申领余量"] = max(0, cap - used)
+            d["新容量内合法占用"] = min(used, cap)
+            d["影子占用"] = max(0, used - cap)
+            d["是否超容"] = used > cap
+            d.setdefault("容量指纹", 0)
+        return rows
     finally:
         conn.close()
 
